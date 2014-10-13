@@ -24,12 +24,39 @@
     <ClCompile Include="node.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="prob.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="probDigit.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="func.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="util.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="layer.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="node.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Prob.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="probDigit.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="func.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="util.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="easylogging.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

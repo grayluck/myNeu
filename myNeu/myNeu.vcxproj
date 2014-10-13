@@ -62,13 +62,22 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="func.cpp" />
     <ClCompile Include="layer.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="node.cpp" />
+    <ClCompile Include="prob.cpp" />
+    <ClCompile Include="probDigit.cpp" />
+    <ClCompile Include="util.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="easylogging.h" />
+    <ClInclude Include="func.h" />
     <ClInclude Include="layer.h" />
     <ClInclude Include="node.h" />
+    <ClInclude Include="Prob.h" />
+    <ClInclude Include="probDigit.h" />
+    <ClInclude Include="util.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
