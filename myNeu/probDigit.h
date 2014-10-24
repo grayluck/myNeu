@@ -7,7 +7,10 @@
 class ProbDigit : public Prob
 {
 public:
+	ProbDigit();
 	void init();
+	double test();
+	void loadFile(char* filName);
 };
 
 #endif

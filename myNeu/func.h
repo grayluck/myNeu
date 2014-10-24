@@ -7,7 +7,8 @@ class Func
 public:
 	virtual double f(double x);
 	virtual double df(double x);
-	virtual double err(double std, double x);
+	virtual double f(double std, double x);
+	virtual double df(double std, double x);
 };
 
 class Sigmoid : public Func
@@ -17,10 +18,18 @@ public:
 	double df(double x);
 };
 
-class MSE : public Func
+class LeastSquare : public Func
 {
 public:
-	double err(double std, double x);
+	double f(double std, double x);
+	double df(double std, double x);
+};
+
+class Relu : public Func
+{
+public:
+	double f(double x);
+	double df(double x);
 };
 
 #endif

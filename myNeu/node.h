@@ -26,7 +26,7 @@ public:
 	Node(Layer* fa);
 	void fullConn(Layer* nxt);
 	void addIn(Node* node);
-	double y, delta, ans;
+	double y, delta, ans, u;
 };
 
 #endif

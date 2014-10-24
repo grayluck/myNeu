@@ -59,5 +59,8 @@
     <ClInclude Include="easylogging.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="testCase.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
