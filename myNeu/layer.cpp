@@ -20,6 +20,11 @@ void Layer::fullConn(Layer* layer)
 		node[i]->fullConn(layer);
 }
 
+BPLayer::BPLayer()
+{
+
+}
+
 // µÚÒ»²ã
 BPLayer::BPLayer(int n)
 {
@@ -46,17 +51,17 @@ void BPLayer::forward()
 
 void BPLayer::backward()
 {
-	for(int i = 0; i < node.size(); ++i)
+	for(int i = 0; i < last->node.size(); ++i)
 	{
 		double u = 0;
-		Node* p = node[i];
+		Node* p = last->node[i];
 		for(int j = 0; j < p->out.size(); ++j)
 		{
 			Edge* e = p->out[j];
 			Node* q = e->en;
 			u += e->w * q->delta;
 		}
-		u *= func->df(p->u);
+		u *= last->func->df(p->u);
 		p->delta = u;
 		for(int j = 0; j < p->out.size(); ++j)
 		{
@@ -147,7 +152,6 @@ void SoftmaxBPLayer::forward()
 	}
 }
 
-
 /*
 	Relu BPLayer
 */
@@ -156,4 +160,129 @@ ReluBPLayer::ReluBPLayer(int n): BPLayer(n)
 {
 	func = new Relu();
 	ita = 0.005;
+}
+
+
+/////////////////////////////////////////////
+/////////////////  CONV  ////////////////////
+/////////////////////////////////////////////
+
+Node* Layer::getValue(int x, int y, int channel, int i)
+{
+	return node[i * w * h * this->channel + channel * w * h + x * w + y];
+}
+
+Node* Layer::getLastValue(int x, int y, int channel, int i)
+{
+	return last->node[i * w * h * this->channel + channel * w * h + x * w + y];
+}
+
+int Layer::trans(int x, int y, int c, int i)
+{
+	return i * w * h * this->channel + channel * w * h + x * w + y;
+}
+
+bool Layer::pin(int x, int y)
+{
+	return x >=0 && y >=0 && x < h && y < w;
+}
+
+ConvLayer::ConvLayer(int w, int h, int channel, int n, int siz)
+{
+	this->w = w;
+	this->h = h;
+	this->channel = channel;
+	this->siz = siz;
+	this->filter = n;
+	int m = w * h * channel * n;
+	for(int i = 0; i <m; ++i)
+		node.push_back(new Node(this));
+	edge = new double[10];
+}
+
+ConvLayer::~ConvLayer()
+{
+	delete edge;
+}
+
+void ConvLayer::forward()
+{
+	int st = - siz / 2;
+	int en = siz + st - 1;
+	for(int i = 0; i < filter; ++i)
+		for(int c = 0; c < channel; ++c)
+			for(int x = 0; x < h; ++x)
+				for(int y = 0; y < w; ++y)
+				{
+					Node* p = node[trans(x, y, c, i)];
+					double sum = 0;
+					for(int xx = st; xx <= en; ++xx)
+						for(int yy = st; yy <= en; ++yy)
+						{
+							int px = x + xx;
+							int py = y + yy;
+							if(pin(px, py))
+								sum += getLastValue(px, py, c, i)->y
+									* edge[trans(xx + st, yy + st, c, i)];
+						}
+					p->u = sum;
+					p->y = func->f(p->y);
+				}
+}
+
+void ConvLayer::backward()
+{
+
+}
+
+////////////////////////////////////////////
+// Pooling Layer
+PoolLayer::PoolLayer(int w, int h, int channel, int n, int siz, Mode mode)
+{
+	this->w = w;
+	this->h = h;
+	this->channel = channel;
+	this->siz = siz;
+	this->filter = n;
+	this->mode = mode;
+	int m = w * h * channel * n;
+	for(int i = 0; i <m; ++i)
+		node.push_back(new Node(this));
+}
+
+void PoolLayer::forward()
+{
+	int st = - siz / 2;
+	int en = siz + st - 1;
+	for(int i = 0; i < filter; ++i)
+		for(int c = 0; c < channel; ++c)
+			for(int x = 0; x < h; ++x)
+				for(int y = 0; y < w; ++y)
+				{
+					Node* p = node[trans(x, y, c, i)];
+					double sum = 0;
+					int cnt = 0;
+					for(int xx = st; xx <= en; ++xx)
+						for(int yy = st; yy <= en; ++yy)
+						{
+							int px = x + xx;
+							int py = y + yy;
+							if(pin(px, py))
+							{
+								cnt ++;
+								double y = getLastValue(px, py, c, i)->y;
+								if(mode == MAX)
+									sum = max(sum, y);
+								else
+									sum += y;
+							}
+						}
+					p->u = (mode == MAX? sum : sum / cnt);
+					p->y = func->f(p->y);
+				}
+}
+
+void PoolLayer::backward()
+{
+
 }

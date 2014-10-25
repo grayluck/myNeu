@@ -17,6 +17,8 @@ void Prob::addLayer(Layer* layer)
 	if(this->layer.size() > 0)
 		layer->last = this->layer[this->layer.size() - 1];
 	*/
+	if(this->layer.size())
+		layer->last = this->layer.back();
 	this->layer.push_back(layer);
 }
 
@@ -61,7 +63,7 @@ void Prob::doTrain(vector<Testcase>& dat, double target)
 			E = p->backwardOutput();
 			//cnt = (cnt + 1) % 1000;
 			//if(cnt== 0)		LOG(DEBUG)<<E<<endl;
-			for(int i = layer.size() - 2; i >=0; --i)
+			for(int i = layer.size() - 1; i > 0; --i)
 				layer[i]->backward();
 		}
 		for(int i = 0; i < n; ++i)

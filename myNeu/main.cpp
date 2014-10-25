@@ -39,11 +39,11 @@ int main(int argc, char* argv[])
 	// prob->target = 1 - 1e-7;
 	// relu
 	//prob->target = 0.9875;
-	/*
 	prob->target = 1;
 	prob->init();
-	*/
+	/*
 	prob->load();
 	prob->test();
+	*/
 	return 0;
 }
